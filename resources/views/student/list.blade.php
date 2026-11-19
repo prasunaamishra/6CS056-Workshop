@@ -1,22 +1,12 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Students</title>
-</head>
-
-<body>
+<x-layouts.app title="Students">
 
     <h1>Students</h1>
 
-    @if(session('success'))
-        <p>{{ session('success') }}</p>
-    @endif
+    <a href="{{ route('students.create') }}" class="btn">
+        Create Student
+    </a>
 
-    <a href="/student/create">Create Student</a>
-
-    <br><br>
-
-    <table border="1" cellpadding="10">
+    <table>
 
         <thead>
             <tr>
@@ -33,6 +23,7 @@
             @forelse($students as $student)
 
                 <tr>
+
                     <td>{{ $student->id }}</td>
 
                     <td>{{ $student->name }}</td>
@@ -42,40 +33,27 @@
                     <td>{{ $student->phone }}</td>
 
                     <td>
-                        <a href="/students/{{ $student->id }}">
+
+                        <a href="{{ route('students.show', $student) }}">
                             View
                         </a>
 
-                        &nbsp;
-
-                        <a href="/students/{{ $student->id }}/edit">
+                        <a href="{{ route('students.edit', $student) }}">
                             Edit
                         </a>
 
-                        &nbsp;
+                        <x-delete-form
+                            :action="route('students.destroy', $student)"
+                        />
 
-                        <form
-                            action="/students/{{ $student->id }}"
-                            method="POST"
-                            style="display:inline"
-                        >
-                            @csrf
-
-                            @method('DELETE')
-
-                            <button type="submit">
-                                Delete
-                            </button>
-                        </form>
                     </td>
+
                 </tr>
 
             @empty
 
                 <tr>
-                    <td colspan="5">
-                        No students found.
-                    </td>
+                    <td colspan="5">No students found.</td>
                 </tr>
 
             @endforelse
@@ -84,5 +62,4 @@
 
     </table>
 
-</body>
-</html>
+</x-layouts.app>
